@@ -148,7 +148,7 @@ std::pair<int, int> VAD(vec_dbl v)
 	{
 		e += v[i] * v[i];
 	}
-	double et = 500 * e;			//SET ENERGY THRESHHOLD
+	double et = 4 * e;			//SET ENERGY THRESHHOLD
 
 	for (; i < v.size(); i++)	//FIND START POINT
 	{
@@ -158,16 +158,16 @@ std::pair<int, int> VAD(vec_dbl v)
 	}
 	int start = i - 400;
 	int end = v.size();
-	for (; i < v.size(); i++)	//FIND END POINT
-	{
-		e += v[i] * v[i] - v[i - 400] * v[i - 400];
-		if (e < et)
-		{
-			end = i - 400;
-			break;
-		}
-	}
-	//std::cout << start << " to " << end << " , total frames = "<< end-start << '\n';
+	//for (; i < v.size(); i++)	//FIND END POINT
+	//{
+	//	e += v[i] * v[i] - v[i - 400] * v[i - 400];
+	//	if (e < et)
+	//	{
+	//		end = i - 400;
+	//		break;
+	//	}
+	//}
+	////std::cout << start << " to " << end << " , total frames = "<< end-start << '\n';
 	return std::make_pair(start, end);
 }
 
@@ -183,7 +183,7 @@ matrix_dbl calc_C_for_file(string inputfile)
 	int start = 0, end = v.size();
 	std::pair<int, int> tempp = VAD(v);
 	start = tempp.first; end = tempp.second;
-	start += (end - start) / 2 - (window_size + stride * (no_of_itern - 1)) / 3;
+	//start += (end - start) / 2 - (window_size + stride * (no_of_itern - 1)) / 3;
 
 	for (int itern = 0; itern < no_of_itern; itern++)
 	{
@@ -203,14 +203,14 @@ void makeUniverse(string outfile = UniverseFile)
 {
 	string infile;
 	std::ofstream fout(outfile);
-	char vowels[] = { 'a','e','i','o','u' };
+	char dig[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
 	matrix_dbl refC[5], C;
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		for (int j = 0; j < num_of_rec; j++)
 		{
-			infile = inpath + (string)"150101012_" + vowels[i] + (string)"_" + std::to_string(j + 1) + (string)".txt";
+			infile = inpath + (string)"150101012_" + dig[i] + (string)"_" + std::to_string(j + 1) + (string)".txt";
 			//std::cout << inputfile << " : ";
 			C = calc_C_for_file(infile);
 			refC[i].insert(refC[i].end(), C.begin(), C.end());
