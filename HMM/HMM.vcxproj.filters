@@ -29,5 +29,8 @@
     <ClCompile Include="HMM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="observations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
